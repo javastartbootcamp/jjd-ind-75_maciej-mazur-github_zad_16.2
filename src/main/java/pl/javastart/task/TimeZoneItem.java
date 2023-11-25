@@ -1,35 +1,28 @@
 package pl.javastart.task;
 
+import java.time.ZoneId;
+import java.util.TimeZone;
+
 public enum TimeZoneItem {
-    LOCAL_TIME("Czas lokalny"),
-    UTC("UTC"),
-    LONDON("Londyn"),
-    LOS_ANGELES("Los Angeles"),
-    SYDNEY("Sydney");
+    LOCAL_TIME("Czas lokalny", TimeZone.getDefault().toZoneId()),
+    UTC("UTC", ZoneId.of("UTC")),
+    LONDON("Londyn", ZoneId.of("Europe/London")),
+    LOS_ANGELES("Los Angeles", ZoneId.of("America/Los_Angeles")),
+    SYDNEY("Sydney", ZoneId.of("Australia/Sydney"));
 
     private final String translation;
+    private final ZoneId zoneId;
 
-    TimeZoneItem(String translation) {
+    TimeZoneItem(String translation, ZoneId zoneId) {
         this.translation = translation;
+        this.zoneId = zoneId;
     }
 
     public String getTranslation() {
         return translation;
     }
 
-    @Override
-    public String toString() {
-        /*
-        Chcę odwzorować oryginalne formatowanie nazw krajów zwróconych
-         */
-        return String.format("%s%s", name().charAt(0), name().substring(1).toLowerCase());
-    }
-
-    public static TimeZoneItem getTimeZoneItemFromZoneId(String s) {
-        /*
-        Poniższa operacja jest konieczna, ponieważ stream z klasy TimeConverter zwraca stringi reprezentujące
-        ZoneId w formacie kontynent/kraj, poniżej zatem pozbywam się frazy zawierającej kontynent i ukośnik.
-         */
-        return valueOf(s.split("/")[1].toUpperCase());
+    public ZoneId getZoneId() {
+        return zoneId;
     }
 }
